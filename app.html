@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>X Timing</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #090d12;
+  --card: #141b23;
+  --green: #a3e635;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px 17px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+}
+header { margin-bottom: 27px; }
+h1 { margin: 0; font-size: 30px; letter-spacing: -1px; }
+h1 span { color: var(--green); }
+.subtitle { color: var(--muted); font-size: 13px; }
+h2 { font-size: 17px; margin: 26px 0 13px; }
+.clocks { display: grid; gap: 10px; }
+.card {
+  background: var(--card);
+  border: 1px solid #26313e;
+  border-radius: 16px;
+  padding: 17px;
+}
+.city { color: var(--muted); font-size: 13px; }
+.time { font-size: 31px; font-weight: 650; margin-top: 3px; }
+.date { color: var(--muted); font-size: 12px; }
+.badge {
+  display: inline-block;
+  color: var(--green);
+  background: #26351b;
+  padding: 5px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+.day {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #26313e;
+  padding: 14px 0;
+  font-size: 14px;
+}
+.day:last-child { border: 0; }
+.hours { color: var(--green); text-align: right; }
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  background: var(--green);
+  color: #10150a;
+  font-size: 15px;
+  font-weight: 700;
+}
+.note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>X <span>Timing</span></h1>
+  <div class="subtitle">Your time. Your audience. Your moment.</div>
+</header>
+
+<div class="badge">WORLD CLOCKS</div>
+<div class="clocks">
+  <div class="card">
+    <div class="city">OUAGADOUGOU · BURKINA FASO</div>
+    <div class="time" id="ouaga">--:--:--</div>
+    <div class="date" id="date-ouaga"></div>
+  </div>
+  <div class="card">
+    <div class="city">NEW YORK · UNITED STATES</div>
+    <div class="time" id="ny">--:--:--</div>
+    <div class="date" id="date-ny"></div>
+  </div>
+  <div class="card">
+    <div class="city">PARIS · FRANCE</div>
+    <div class="time" id="paris">--:--:--</div>
+    <div class="date" id="date-paris"></div>
+  </div>
+</div>
+
+<h2>Publication schedule</h2>
+<div class="card">
+  <div class="day"><span>Monday</span><span class="hours">14:00–15:00 · 17:00</span></div>
+  <div class="day"><span>Tuesday</span><span class="hours">12:00–18:00</span></div>
+  <div class="day"><span>Wednesday</span><span class="hours">12:00–18:00</span></div>
+  <div class="day"><span>Thursday</span><span class="hours">12:00–18:00</span></div>
+  <div class="day"><span>Friday</span><span class="hours">12:00–18:00</span></div>
+  <div class="day"><span>Saturday</span><span class="hours">Not recommended</span></div>
+  <div class="day"><span>Sunday</span><span class="hours">14:00–18:00</span></div>
+</div>
+
+<h2>Reminders</h2>
+<div class="card">
+  <div>Publication alerts</div>
+  <p class="note">
+    The schedule above is a reference in New York time.
+    Automatic conversion and Android notifications will
+    be added in the next development stage.
+  </p>
+  <button onclick="alert('Les notifications Android seront configurées dans la prochaine étape.')">
+    Configure reminders
+  </button>
+</div>
+
+<p class="note">
+  Reference: Sprout Social · 2026<br>
+  General recommendations, not a guarantee of engagement.
+</p>
+
+<script>
+const cities = [
+  { id: "ouaga", zone: "Africa/Ouagadougou" },
+  { id: "ny", zone: "America/New_York" },
+  { id: "paris", zone: "Europe/Paris" }
+];
+
+function updateClocks() {
+  cities.forEach(city => {
+    const now = new Date();
+    document.getElementById(city.id).textContent =
+      new Intl.DateTimeFormat("fr-FR", {
+        timeZone: city.zone,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hourCycle: "h23"
+      }).format(now);
+
+    document.getElementById("date-" + city.id).textContent =
+      new Intl.DateTimeFormat("fr-FR", {
+        timeZone: city.zone,
+        weekday: "long",
+        day: "numeric",
+        month: "long"
+      }).format(now);
+  });
+}
+
+updateClocks();
+setInterval(updateClocks, 1000);
+</script>
+
+</body>
+  </html>
